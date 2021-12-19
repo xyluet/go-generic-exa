@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"golang.org/x/exp/slices"
 )
@@ -10,12 +11,16 @@ func main() {
 	fmt.Println(slices.Index([]int{1, 2}, 1))
 
 	// casual
-	fmt.Println(Every([]int{2, 4, 6}, isEven))
-	fmt.Println(Filter([]int{1, 2, 3, 4}, isEven))
-	fmt.Println(FindIndex([]int{1, 2, 3}, isEven))
-	fmt.Println(FindIndex([]int{1}, isEven))
-	fmt.Println(IndexOf([]int{1, 2}, 2))
-	fmt.Println(IndexOf([]int{1, 2}, 3))
+	fmt.Println(Every([]int{2, 4, 6}, isEven))     // true
+	fmt.Println(Filter([]int{1, 2, 3, 4}, isEven)) // [2, 4]
+	fmt.Println(FindIndex([]int{1, 2, 3}, isEven)) // 1
+	fmt.Println(FindIndex([]int{1}, isEven))       // -1
+	fmt.Println(IndexOf([]int{1, 2}, 2))           // 1
+	fmt.Println(IndexOf([]int{1, 2}, 3))           // -1
+	fmt.Println(Includes([]int{1, 2, 3}, 2))       // true
+	fmt.Println(Includes([]int{1, 2, 3}, 4))       // false
+	fmt.Println(Join([]int{1, 2}, "-"))            // 1-2
+	fmt.Println(Join([]string{"foo", "bar"}, "-")) // foo-bar
 
 	isEveryEven := MakeEveryFunc(isEven)
 	fmt.Println(isEveryEven([]int{2, 4}))
@@ -57,4 +62,16 @@ func FindIndex[E comparable](s []E, f func(e E) bool) int {
 
 func IndexOf[E comparable](s []E, e E) int {
 	return FindIndex(s, func(e2 E) bool { return e == e2 })
+}
+
+func Includes[E comparable](s []E, e E) bool {
+	return IndexOf(s, e) >= 0
+}
+
+func Join[E any](s []E, sep string) string {
+	ss := make([]string, 0, len(s))
+	for _, v := range s {
+		ss = append(ss, fmt.Sprint(v))
+	}
+	return strings.Join(ss, sep)
 }
