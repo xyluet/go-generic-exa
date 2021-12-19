@@ -11,16 +11,18 @@ func main() {
 	fmt.Println(slices.Index([]int{1, 2}, 1))
 
 	// casual
-	fmt.Println(Every([]int{2, 4, 6}, isEven))     // true
-	fmt.Println(Filter([]int{1, 2, 3, 4}, isEven)) // [2, 4]
-	fmt.Println(FindIndex([]int{1, 2, 3}, isEven)) // 1
-	fmt.Println(FindIndex([]int{1}, isEven))       // -1
-	fmt.Println(IndexOf([]int{1, 2}, 2))           // 1
-	fmt.Println(IndexOf([]int{1, 2}, 3))           // -1
-	fmt.Println(Includes([]int{1, 2, 3}, 2))       // true
-	fmt.Println(Includes([]int{1, 2, 3}, 4))       // false
-	fmt.Println(Join([]int{1, 2}, "-"))            // 1-2
-	fmt.Println(Join([]string{"foo", "bar"}, "-")) // foo-bar
+	fmt.Println(Every([]int{2, 4, 6}, isEven))                                            // true
+	fmt.Println(Filter([]int{1, 2, 3, 4}, isEven))                                        // [2, 4]
+	fmt.Println(FindIndex([]int{1, 2, 3}, isEven))                                        // 1
+	fmt.Println(FindIndex([]int{1}, isEven))                                              // -1
+	fmt.Println(IndexOf([]int{1, 2}, 2))                                                  // 1
+	fmt.Println(IndexOf([]int{1, 2}, 3))                                                  // -1
+	fmt.Println(Includes([]int{1, 2, 3}, 2))                                              // true
+	fmt.Println(Includes([]int{1, 2, 3}, 4))                                              // false
+	fmt.Println(Join([]int{1, 2}, "-"))                                                   // 1-2
+	fmt.Println(Join([]string{"foo", "bar"}, "-"))                                        // foo-bar
+	fmt.Println(Map([]int{1, 2}, func(i int) int { return i + 10 }))                      // [11, 12]
+	fmt.Println(Map([]string{"foo", "bar"}, func(s string) string { return s + "fazz" })) // [foofazz, barfazz]
 
 	isEveryEven := MakeEveryFunc(isEven)
 	fmt.Println(isEveryEven([]int{2, 4}))
@@ -74,4 +76,12 @@ func Join[E any](s []E, sep string) string {
 		ss = append(ss, fmt.Sprint(v))
 	}
 	return strings.Join(ss, sep)
+}
+
+func Map[E any, S ~[]E](s S, f func(e E) E) S {
+	s2 := make(S, 0)
+	for _, v := range s {
+		s2 = append(s2, f(v))
+	}
+	return s2
 }
